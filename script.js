@@ -27,3 +27,4 @@ fetch(`https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=${apiKe
 const line = document.createElement('hr');
 topStoriesBox.appendChild(articleEl);
 topStoriesBox.appendChild(line);
+
