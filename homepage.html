@@ -15,7 +15,7 @@
         <div class="title-side weather" id="weather"></div>
       </div>
       <nav class="nav-bar">
-        <a href="index.html">Home</a>
+        <a href="homepage.html">Home</a>
         <a href="personalized.html">Personal Feed</a>
         <a href="compare.html">Compare Coverage</a>
         <a href="about.html">About</a>
@@ -37,29 +37,7 @@
         <a href="help.html">Link to Help and About Page</a>
       </div>
       <script src="script.js"></script>
-      <script>
-        // Load current date
-        const dateEl = document.getElementById('date');
-        const today = new Date();
-        const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
-        dateEl.textContent = today.toLocaleDateString(undefined, dateOptions);
-      
-        // Load weather (Washington, DC as example)
-        const weatherEl = document.getElementById('weather');
-      
-        fetch("https://api.open-meteo.com/v1/forecast?latitude=38.9&longitude=-77.03&current_weather=true")
-        .then(response => response.json())
-        .then(data => {
-          const tempC = data.current_weather.temperature;
-          const tempF = Math.round((tempC * 9/5) + 32);
-          weatherEl.textContent = `Washington, DC: ${tempF}°F`;
-        })
-        .catch(() => {
-          weatherEl.textContent = "Weather unavailable";
-        });
-
-          
-      </script>
+     
       
     </main>
   </body>

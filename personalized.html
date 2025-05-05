@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Personal Feed | News Digest</title>
+    <link rel="stylesheet" href="apple.css" />
+  </head>
+  <body>
+    <header>
+      <div class="title-box">
+        <div class="title-side date" id="date"></div>
+        <h1 class="main-title">Personal Feed</h1>
+        <div class="title-side weather" id="weather"></div>
+      </div>
+      <nav class="nav-bar">
+        <a href="homepage.html">Home</a>
+        <a href="personalized.html">Personal Feed</a>
+        <a href="compare.html">Compare Coverage</a>
+        <a href="about.html">About</a>
+        <a href="help.html">Help</a>
+      </nav>
+    </header>
+
+    <!-- Search Form -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search for a topic..." />
+      <button id="searchBtn">Search</button>
+    </div>
+
+    <!-- Search Results -->
+    <div id="searchResults" class="article-list"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
