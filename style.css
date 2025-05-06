@@ -16,7 +16,7 @@ body {
 }
 
 .nav-bar {
-  background-color: #2f6690;
+  background-color: ff6b35;
   display: flex;
   justify-content: center;
   padding: 10px;
@@ -121,3 +121,7 @@ hr {
   border-top: 1px solid #666;
   margin: 10px 0;
 }
+
+
+
+
