@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const dateEl = document.getElementById('date');
   const weatherEl = document.getElementById('weather');
 
+
+
   // Load top stories
   if (topStoriesBox) {
     fetch(`https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=${apiKey}`)
@@ -192,3 +194,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
