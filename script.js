@@ -2,7 +2,7 @@
 
 // ======= HOMEPAGE: TOP STORIES, DATE, WEATHER =======
 document.addEventListener("DOMContentLoaded", () => {
-  const apiKey = '0f3e8eedfec64cc9a19dd377b7e34462';
+  const apiKey = process.env.NEWS_API_KEY;
   const topStoriesBox = document.getElementById('articles');
   const dateEl = document.getElementById('date');
   const weatherEl = document.getElementById('weather');
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ======= PERSONAL FEED PAGE =======
 document.addEventListener("DOMContentLoaded", () => {
-  const apiKey = '0f3e8eedfec64cc9a19dd377b7e34462';
+  const apiKey = process.env.NEWS_API_KEY;
   const searchInput = document.getElementById('searchInput');
   const searchBtn = document.getElementById('searchBtn');
   const results = document.getElementById('searchResults');

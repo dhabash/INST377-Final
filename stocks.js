@@ -1,4 +1,4 @@
-const apiKey = 'ApM8CCuiwD4RCSqaaTqxNdkBDdjUntrw'; 
+const apiKey = process.env.STOCKS_API_KEY; 
 
 // Fetch Reddit Trending Stocks
 fetch('https://tradestie.com/api/v1/apps/reddit?date=2022-04-03')
