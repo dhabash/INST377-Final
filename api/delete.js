@@ -12,14 +12,19 @@ export default async function handler(req, res) {
 
   const { url } = req.body;
 
+  if (!url) {
+    return res.status(400).json({ error: 'Missing article URL' });
+  }
+
   const { error } = await supabase
-    .from('saved_articles')
+    .from('articles')
     .delete()
     .eq('url', url);
 
   if (error) {
-    return res.status(500).json({ error: 'Failed to delete article.' });
+    console.error(error);
+    return res.status(500).json({ error: 'Error deleting article' });
   }
 
-  return res.status(200).json({ message: 'Article deleted successfully.' });
+  return res.status(200).json({ message: 'Article deleted' });
 }

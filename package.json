@@ -1,5 +1,32 @@
 {
+  "name": "inst377-final",
+  "version": "1.0.0",
+  "description": "Multi-Source News Digest Web App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.4"
-  }
+    "@supabase/supabase-js": "^2.49.4",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dhabash/INST377-Final.git"
+  },
+  "keywords": [
+    "news",
+    "supabase",
+    "vercel",
+    "node",
+    "inst377"
+  ],
+  "author": "Deena Habash",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dhabash/INST377-Final/issues"
+  },
+  "homepage": "https://github.com/dhabash/INST377-Final#readme"
 }
