@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Saved Articles | News Digest</title>
-  <link rel="stylesheet" href="apple.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="title-box">
@@ -18,10 +18,11 @@
     <a href="personalized.html">Personal Feed</a>
     <a href="compare.html">Compare Coverage</a>
     <a href="stocks.html">Stocks</a>
+    <a href="saved_articles.html">Saved Articles</a>
     <a href="about.html">About</a>
   </nav>
 
-  <section class="article-list" id="savedArticles">
+  <section class="article-list" id="saved-articles">
     <p>Loading saved articles...</p>
   </section>
 
@@ -29,8 +30,9 @@
     document.addEventListener("DOMContentLoaded", () => {
       const dateEl = document.getElementById('date');
       const weatherEl = document.getElementById('weather');
+      const savedArticlesBox = document.getElementById('saved-articles');
 
-      // Load current date
+      // Load date
       const today = new Date();
       const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
       dateEl.textContent = today.toLocaleDateString(undefined, dateOptions);
@@ -39,35 +41,52 @@
       fetch("https://api.open-meteo.com/v1/forecast?latitude=38.9&longitude=-77.03&current_weather=true")
         .then(res => res.json())
         .then(data => {
-          const tempF = Math.round((data.current_weather.temperature * 9/5) + 32);
+          const tempF = Math.round((data.current_weather.temperature * 9 / 5) + 32);
           weatherEl.textContent = `Washington, DC: ${tempF}°F`;
         });
 
-      // Fetch saved articles
-      const container = document.getElementById("savedArticles");
-      fetch("/api/saved")
-        .then(res => res.json())
-        .then(articles => {
-          container.innerHTML = "";
-          if (articles.length === 0) {
-            container.innerHTML = "<p>No saved articles found.</p>";
-            return;
-          }
+      // Load saved articles
+      if (savedArticlesBox) {
+        fetch('/api/saved')
+          .then(res => res.json())
+          .then(data => {
+            savedArticlesBox.innerHTML = '';
+            if (data && data.length > 0) {
+              data.forEach(article => {
+                const articleEl = document.createElement('div');
+                articleEl.className = 'article';
+                articleEl.innerHTML = `
+                  <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
+                  <p>${article.source}</p>
+                  <button class="remove-btn">Remove</button>
+                `;
 
-          articles.forEach(article => {
-            const div = document.createElement("div");
-            div.className = "article";
-            div.innerHTML = `
-              <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
-              <p>${article.source || "Unknown Source"}</p>
-            `;
-            container.appendChild(div);
-            container.appendChild(document.createElement('hr'));
+                articleEl.querySelector('.remove-btn').addEventListener('click', () => {
+                  const confirmDelete = confirm("Are you sure you want to remove this article?");
+                  if (!confirmDelete) return;
+
+                  fetch('/api/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: article.url })
+                  })
+                  .then(res => res.json())
+                  .then(() => {
+                    articleEl.remove();
+                  })
+                  .catch(() => alert('Error deleting article.'));
+                });
+
+                savedArticlesBox.appendChild(articleEl);
+              });
+            } else {
+              savedArticlesBox.innerHTML = '<p>No saved articles found.</p>';
+            }
+          })
+          .catch(() => {
+            savedArticlesBox.innerHTML = '<p>Error loading saved articles.</p>';
           });
-        })
-        .catch(() => {
-          container.innerHTML = "<p>Error loading saved articles.</p>";
-        });
+      }
     });
   </script>
 </body>
