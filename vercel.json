@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "builds": [
+    { "src": "*.html", "use": "@vercel/static" },
+    { "src": "*.css", "use": "@vercel/static" },
+    { "src": "*.js", "use": "@vercel/static" }
+  ],
   "routes": [
     { "src": "^/$", "dest": "/homepage.html" },
     { "src": "^/homepage(?:\\.html)?$", "dest": "/homepage.html" },
@@ -8,7 +13,6 @@
     { "src": "^/personalized(?:\\.html)?$", "dest": "/personalized.html" },
     { "src": "^/saved_articles(?:\\.html)?$", "dest": "/saved_articles.html" },
     { "src": "^/stocks(?:\\.html)?$", "dest": "/stocks.html" },
-    
     { "handle": "filesystem" },
     { "src": "/.*", "status": 404, "dest": "/404.html" }
   ]
