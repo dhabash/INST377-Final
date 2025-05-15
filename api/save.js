@@ -1,23 +1,26 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
+import dotenv from 'dotenv';
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-)
+dotenv.config();
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { title, source, url } = req.body
+  try {
+    const { title, url, source } = req.body;
+    const { data, error } = await supabase
+      .from('saved_articles')
+      .insert([{ title, url, source }]);
 
-  const { error } = await supabase.from('articles').insert([{ title, source, url }])
+    if (error) throw error;
 
-  if (error) {
-    console.error(error)
-    return res.status(500).json({ error: 'Error saving article' })
+    res.status(200).json({ message: 'Article saved successfully' });
+  } catch (error) {
+    console.error('Save error:', error);
+    res.status(500).json({ error: 'Failed to save article' });
   }
-
-  return res.status(200).json({ message: 'Article saved' })
 }
