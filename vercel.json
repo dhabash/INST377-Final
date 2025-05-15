@@ -1,19 +1,16 @@
 {
   "version": 2,
-  "public": true,
   "builds": [
     { "src": "api/*.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "^/api/(.*)", "dest": "/api/$1.js" },
-
+    { "src": "/api/(.*)", "dest": "/api/$1.js" },
     { "src": "^/$", "dest": "/homepage.html" },
     { "src": "^/about$", "dest": "/about.html" },
     { "src": "^/compare$", "dest": "/compare.html" },
     { "src": "^/personalized$", "dest": "/personalized.html" },
     { "src": "^/saved_articles$", "dest": "/saved_articles.html" },
     { "src": "^/stocks$", "dest": "/stocks.html" },
-
     { "handle": "filesystem" },
     { "src": "/(.*)", "status": 404, "dest": "/404.html" }
   ]
