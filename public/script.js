@@ -7,52 +7,10 @@ const client = supabase.createClient(
 
 const gnewsKey = '64f296624fc5d8a33c99a52e01f0d195';
 
-// ======= HOMEPAGE =======
+// ======= GLOBAL WEATHER & DATE (for all pages) =======
 document.addEventListener("DOMContentLoaded", () => {
-  const topStoriesBox = document.getElementById('articles');
   const dateEl = document.getElementById('date');
   const weatherEl = document.getElementById('weather');
-
-  if (topStoriesBox) {
-    fetch(`https://gnews.io/api/v4/top-headlines?lang=en&country=us&max=5&token=${gnewsKey}`)
-      .then(res => res.json())
-      .then(data => {
-        if (!data.articles || data.articles.length === 0) {
-          topStoriesBox.innerHTML = '<p>No articles found.</p>';
-          return;
-        }
-        topStoriesBox.innerHTML = '';
-        data.articles.forEach(article => {
-          const articleEl = document.createElement('div');
-          articleEl.className = 'article';
-          articleEl.innerHTML = `
-            <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
-            <p>${article.source.name}</p>
-            <button class="save-btn">Save Article</button>
-          `;
-          articleEl.querySelector(".save-btn").addEventListener("click", async () => {
-            const { error } = await client.from('saved_articles').insert([
-              {
-                title: article.title,
-                source: article.source.name,
-                url: article.url
-              }
-            ]);
-            if (error) {
-              console.error("❌ Error saving article:", error);
-              alert("Error saving article.");
-            } else {
-              alert("Article saved!");
-            }
-          });
-          topStoriesBox.appendChild(articleEl);
-        });
-      })
-      .catch(err => {
-        console.error('❌ Error fetching news:', err);
-        topStoriesBox.innerHTML = '<p>Error loading news.</p>';
-      });
-  }
 
   if (dateEl) {
     const today = new Date();
@@ -73,16 +31,59 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// ======= PERSONAL FEED PAGE =======
+// ======= HOMEPAGE: Top Stories =======
+document.addEventListener("DOMContentLoaded", () => {
+  const topStoriesBox = document.getElementById('articles');
+  if (!topStoriesBox) return;
+
+  fetch(`https://gnews.io/api/v4/top-headlines?lang=en&country=us&max=5&token=${gnewsKey}`)
+    .then(res => res.json())
+    .then(data => {
+      if (!data.articles || data.articles.length === 0) {
+        topStoriesBox.innerHTML = '<p>No articles found.</p>';
+        return;
+      }
+
+      topStoriesBox.innerHTML = '';
+      data.articles.forEach(article => {
+        const articleEl = document.createElement('div');
+        articleEl.className = 'article';
+        articleEl.innerHTML = `
+          <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
+          <p>${article.source.name}</p>
+          <button class="save-btn">Save Article</button>
+        `;
+        articleEl.querySelector(".save-btn").addEventListener("click", async () => {
+          const { error } = await client.from('saved_articles').insert([
+            {
+              title: article.title,
+              source: article.source.name,
+              url: article.url
+            }
+          ]);
+          if (error) {
+            console.error("❌ Error saving article:", error);
+            alert("Error saving article.");
+          } else {
+            alert("Article saved!");
+          }
+        });
+        topStoriesBox.appendChild(articleEl);
+      });
+    })
+    .catch(err => {
+      console.error('❌ Error fetching news:', err);
+      topStoriesBox.innerHTML = '<p>Error loading news.</p>';
+    });
+});
+
+// ======= PERSONALIZED FEED: Search =======
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById('searchInput');
   const searchBtn = document.getElementById('searchBtn');
   const results = document.getElementById('searchResults');
 
-  if (!searchInput || !searchBtn || !results) {
-    console.warn("🔍 Search page elements not found — skipping search setup.");
-    return;
-  }
+  if (!searchInput || !searchBtn || !results) return;
 
   console.log("🔍 Search initialized");
 
@@ -107,11 +108,13 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="save-btn">Save Article</button>
         `;
         div.querySelector(".save-btn").addEventListener("click", async () => {
-          const { error } = await client.from('saved_articles').insert([{
-            title: article.title,
-            source: article.source.name,
-            url: article.url
-          }]);
+          const { error } = await client.from('saved_articles').insert([
+            {
+              title: article.title,
+              source: article.source.name,
+              url: article.url
+            }
+          ]);
           if (error) {
             console.error("❌ Error saving article:", error);
             alert("Error saving article.");
@@ -135,7 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Auto-search if topic= is in the URL
   const urlParams = new URLSearchParams(window.location.search);
   const prefilledTopic = urlParams.get('topic');
   if (prefilledTopic) {
@@ -144,7 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
     runSearch(prefilledTopic);
   }
 });
-
 
 // ======= SAVED ARTICLES PAGE =======
 document.addEventListener("DOMContentLoaded", async () => {
