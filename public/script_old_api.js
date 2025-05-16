@@ -1,6 +1,6 @@
 console.log("✅ script.js loaded");
 
-const gnewsKey = '64f296624fc5d8a33c99a52e01f0d195'; 
+const apiKey = '4cf78d77ffd449b7887ce73bfb31c054'; 
 
 // ========== MAIN SCRIPT FOR ALL PAGES ========== //
 
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const weatherEl = document.getElementById('weather');
 
   if (topStoriesBox) {
-    fetch(`https://gnews.io/api/v4/top-headlines?lang=en&country=us&max=5&token=${gnewsKey}`)
+    fetch(`https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=${apiKey}`)
       .then(response => response.json())
       .then(data => {
         if (data.articles) {
@@ -24,7 +24,18 @@ document.addEventListener("DOMContentLoaded", () => {
               <button class="save-btn">Save Article</button>
             `;
             articleEl.querySelector(".save-btn").addEventListener("click", () => {
-              alert("Saved (mock only — add backend to persist)");
+              fetch('/api/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  title: article.title,
+                  source: article.source.name,
+                  url: article.url
+                })
+              })
+              .then(res => res.json())
+              .then(() => alert("Article saved!"))
+              .catch(() => alert("Error saving article."));
             });
             topStoriesBox.appendChild(articleEl);
             topStoriesBox.appendChild(document.createElement('hr'));
@@ -50,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(response => response.json())
       .then(data => {
         const tempC = data.current_weather.temperature;
-        const tempF = Math.round((tempC * 9/5) + 32);
+        const tempF = Math.round((tempC * 9 / 5) + 32);
         weatherEl.textContent = `Washington, DC: ${tempF}°F`;
       })
       .catch(() => {
@@ -67,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function runSearch(query) {
     results.innerHTML = '<p>Loading...</p>';
-    fetch(`https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=en&max=6&sortby=relevance&token=${gnewsKey}`)
+    fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&pageSize=6&language=en&sortBy=publishedAt&apiKey=${apiKey}`)
       .then(res => res.json())
       .then(data => {
         if (data.articles && data.articles.length > 0) {
@@ -81,7 +92,18 @@ document.addEventListener("DOMContentLoaded", () => {
               <button class="save-btn">Save Article</button>
             `;
             div.querySelector(".save-btn").addEventListener("click", () => {
-              alert("Saved (mock only — add backend to persist)");
+              fetch('/api/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  title: article.title,
+                  source: article.source.name,
+                  url: article.url
+                })
+              })
+              .then(res => res.json())
+              .then(() => alert("Article saved!"))
+              .catch(() => alert("Error saving article."));
             });
             results.appendChild(div);
             results.appendChild(document.createElement('hr'));
@@ -128,34 +150,36 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      fetch(`https://gnews.io/api/v4/search?q=${encodeURIComponent(topic)}&lang=en&max=10&sortby=publishedAt&token=${gnewsKey}`)
-        .then(res => res.json())
-        .then(data => {
-          if (!data.articles || data.articles.length === 0) {
-            compareResults.innerHTML = '<p>No articles found.</p>';
-            return;
-          }
-
-          sources.forEach(source => {
-            const filtered = data.articles.filter(a =>
-              a.source.name.toLowerCase().includes(source.toLowerCase())
-            );
-
+      sources.forEach(source => {
+        fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(topic)}&sources=${source}&pageSize=1&sortBy=publishedAt&apiKey=${apiKey}`)
+          .then(res => res.json())
+          .then(data => {
             const container = document.createElement('div');
             container.className = 'article';
             const label = document.createElement('h4');
             label.textContent = source.replace(/-/g, ' ').toUpperCase();
             container.appendChild(label);
 
-            if (filtered.length > 0) {
-              const a = filtered[0];
+            if (data.articles && data.articles.length > 0) {
+              const a = data.articles[0];
               container.innerHTML += `
                 <h3><a href="${a.url}" target="_blank">${a.title}</a></h3>
                 <p>${a.source.name}</p>
                 <button class="save-btn">Save Article</button>
               `;
               container.querySelector(".save-btn").addEventListener("click", () => {
-                alert("Saved (mock only — add backend to persist)");
+                fetch('/api/save', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    title: a.title,
+                    source: a.source.name,
+                    url: a.url
+                  })
+                })
+                .then(res => res.json())
+                .then(() => alert("Article saved!"))
+                .catch(() => alert("Error saving article."));
               });
             } else {
               container.innerHTML += `<p>No articles found from this source.</p>`;
@@ -163,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             compareResults.appendChild(container);
           });
-        });
+      });
     });
   }
 });
