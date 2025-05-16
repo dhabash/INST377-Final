@@ -1,14 +1,15 @@
+console.log("✅ script.js loaded");
+
 // ========== MAIN SCRIPT FOR ALL PAGES ========== //
 
 // ======= HOMEPAGE: TOP STORIES, DATE, WEATHER =======
 document.addEventListener("DOMContentLoaded", () => {
-  const apiKey = '0f3e8eedfec64cc9a19dd377b7e34462';
   const topStoriesBox = document.getElementById('articles');
   const dateEl = document.getElementById('date');
   const weatherEl = document.getElementById('weather');
 
   if (topStoriesBox) {
-    fetch(`https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=${apiKey}`)
+    fetch('/api/top-stories')
       .then(response => response.json())
       .then(data => {
         if (data.articles) {
@@ -69,14 +70,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ======= PERSONAL FEED PAGE =======
 document.addEventListener("DOMContentLoaded", () => {
-  const apiKey = '0f3e8eedfec64cc9a19dd377b7e34462';
   const searchInput = document.getElementById('searchInput');
   const searchBtn = document.getElementById('searchBtn');
   const results = document.getElementById('searchResults');
 
   function runSearch(query) {
     results.innerHTML = '<p>Loading...</p>';
-    fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&pageSize=6&language=en&sortBy=publishedAt&apiKey=${apiKey}`)
+    fetch(`/api/search?query=${encodeURIComponent(query)}`)
       .then(res => res.json())
       .then(data => {
         if (data.articles && data.articles.length > 0) {
@@ -132,7 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ======= COMPARE COVERAGE PAGE =======
 document.addEventListener("DOMContentLoaded", () => {
-  const apiKey = '0f3e8eedfec64cc9a19dd377b7e34462';
   const compareInput = document.getElementById('compareInput');
   const compareBtn = document.getElementById('compareBtn');
   const compareResults = document.getElementById('compareResults');
@@ -150,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       sources.forEach(source => {
-        fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(topic)}&sources=${source}&pageSize=1&sortBy=publishedAt&apiKey=${apiKey}`)
+        fetch(`/api/compare?query=${encodeURIComponent(topic)}&source=${source}`)
           .then(res => res.json())
           .then(data => {
             const container = document.createElement('div');
@@ -190,4 +189,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
