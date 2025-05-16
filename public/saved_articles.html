@@ -52,7 +52,7 @@
         });
 
       // Load saved articles from Supabase
-      const { data: articles, error } = await supabase
+      const { data: articles, error } = await client
         .from('saved_articles')
         .select('*')
         .order('created_at', { ascending: false });
@@ -83,7 +83,7 @@
           const confirmDelete = confirm("Are you sure you want to remove this article?");
           if (!confirmDelete) return;
 
-          const { error: deleteError } = await supabase
+          const { error: deleteError } = await client
             .from('saved_articles')
             .delete()
             .eq('url', article.url);

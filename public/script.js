@@ -1,7 +1,7 @@
 console.log("✅ script.js loaded");
 
 // Supabase setup
-const supabase = supabase.createClient(
+const client  = supabase.createClient(
   'https://tpzrjjybhkpfjjtczxyo.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwenJqanliaGtwZmpqdGN6eHlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcyNTA4NzEsImV4cCI6MjA2MjgyNjg3MX0.t30PhGq4lwiCF7OMgWNvJQ1IUphSVFqU3m2sXzCvMtw'
 );
