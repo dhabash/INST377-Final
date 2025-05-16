@@ -1,5 +1,7 @@
 console.log("✅ script.js loaded");
 
+const apiKey = '4cf78d77ffd449b7887ce73bfb31c054'; 
+
 // ========== MAIN SCRIPT FOR ALL PAGES ========== //
 
 // ======= HOMEPAGE: TOP STORIES, DATE, WEATHER =======
@@ -9,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const weatherEl = document.getElementById('weather');
 
   if (topStoriesBox) {
-    fetch('/api/top-stories')
+    fetch(`https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=${apiKey}`)
       .then(response => response.json())
       .then(data => {
         if (data.articles) {
@@ -31,9 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   url: article.url
                 })
               })
-                .then(res => res.json())
-                .then(() => alert("Article saved!"))
-                .catch(() => alert("Error saving article."));
+              .then(res => res.json())
+              .then(() => alert("Article saved!"))
+              .catch(() => alert("Error saving article."));
             });
             topStoriesBox.appendChild(articleEl);
             topStoriesBox.appendChild(document.createElement('hr'));
@@ -76,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function runSearch(query) {
     results.innerHTML = '<p>Loading...</p>';
-    fetch(`/api/search?query=${encodeURIComponent(query)}`)
+    fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&pageSize=6&language=en&sortBy=publishedAt&apiKey=${apiKey}`)
       .then(res => res.json())
       .then(data => {
         if (data.articles && data.articles.length > 0) {
@@ -99,9 +101,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   url: article.url
                 })
               })
-                .then(res => res.json())
-                .then(() => alert("Article saved!"))
-                .catch(() => alert("Error saving article."));
+              .then(res => res.json())
+              .then(() => alert("Article saved!"))
+              .catch(() => alert("Error saving article."));
             });
             results.appendChild(div);
             results.appendChild(document.createElement('hr'));
@@ -149,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       sources.forEach(source => {
-        fetch(`/api/compare?query=${encodeURIComponent(topic)}&source=${source}`)
+        fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(topic)}&sources=${source}&pageSize=1&sortBy=publishedAt&apiKey=${apiKey}`)
           .then(res => res.json())
           .then(data => {
             const container = document.createElement('div');
@@ -175,9 +177,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     url: a.url
                   })
                 })
-                  .then(res => res.json())
-                  .then(() => alert("Article saved!"))
-                  .catch(() => alert("Error saving article."));
+                .then(res => res.json())
+                .then(() => alert("Article saved!"))
+                .catch(() => alert("Error saving article."));
               });
             } else {
               container.innerHTML += `<p>No articles found from this source.</p>`;
