@@ -1,7 +1,6 @@
 console.log("✅ script.js loaded");
 
-// Supabase setup
-const client  = supabase.createClient(
+const client = supabase.createClient(
   'https://tpzrjjybhkpfjjtczxyo.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwenJqanliaGtwZmpqdGN6eHlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcyNTA4NzEsImV4cCI6MjA2MjgyNjg3MX0.t30PhGq4lwiCF7OMgWNvJQ1IUphSVFqU3m2sXzCvMtw'
 );
@@ -15,16 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const weatherEl = document.getElementById('weather');
 
   if (topStoriesBox) {
-    const url = `https://gnews.io/api/v4/top-headlines?lang=en&country=us&max=5&token=${gnewsKey}`;
-    fetch(url)
+    fetch(`https://gnews.io/api/v4/top-headlines?lang=en&country=us&max=5&token=${gnewsKey}`)
       .then(res => res.json())
       .then(data => {
-        console.log("📰 GNews response:", data);
         if (!data.articles || data.articles.length === 0) {
           topStoriesBox.innerHTML = '<p>No articles found.</p>';
           return;
         }
-
         topStoriesBox.innerHTML = '';
         data.articles.forEach(article => {
           const articleEl = document.createElement('div');
@@ -35,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <button class="save-btn">Save Article</button>
           `;
           articleEl.querySelector(".save-btn").addEventListener("click", async () => {
-            const { error } = await supabase.from('saved_articles').insert([
+            const { error } = await client.from('saved_articles').insert([
               {
                 title: article.title,
                 source: article.source.name,
@@ -102,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <button class="save-btn">Save Article</button>
           `;
           div.querySelector(".save-btn").addEventListener("click", async () => {
-            const { error } = await supabase.from('saved_articles').insert([
+            const { error } = await client.from('saved_articles').insert([
               {
                 title: article.title,
                 source: article.source.name,
@@ -185,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button class="save-btn">Save Article</button>
               `;
               container.querySelector(".save-btn").addEventListener("click", async () => {
-                const { error } = await supabase.from('saved_articles').insert([
+                const { error } = await client.from('saved_articles').insert([
                   {
                     title: a.title,
                     source: a.source.name,
@@ -193,6 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   }
                 ]);
                 if (error) {
+                  console.error("❌ Error saving article:", error);
                   alert("Error saving article.");
                 } else {
                   alert("Article saved!");
@@ -207,4 +204,57 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
   }
+});
+
+// ======= SAVED ARTICLES PAGE =======
+document.addEventListener("DOMContentLoaded", async () => {
+  const savedArticlesBox = document.getElementById('saved-articles');
+  if (!savedArticlesBox) return;
+
+  const { data: articles, error } = await client
+    .from('saved_articles')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  savedArticlesBox.innerHTML = '';
+
+  if (error) {
+    savedArticlesBox.innerHTML = '<p>Error loading saved articles.</p>';
+    console.error(error);
+    return;
+  }
+
+  if (!articles || articles.length === 0) {
+    savedArticlesBox.innerHTML = '<p>No saved articles found.</p>';
+    return;
+  }
+
+  articles.forEach(article => {
+    const articleEl = document.createElement('div');
+    articleEl.className = 'article';
+    articleEl.innerHTML = `
+      <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
+      <p>${article.source}</p>
+      <button class="remove-btn">Remove</button>
+    `;
+
+    articleEl.querySelector('.remove-btn').addEventListener('click', async () => {
+      const confirmDelete = confirm("Are you sure you want to remove this article?");
+      if (!confirmDelete) return;
+
+      const { error: deleteError } = await client
+        .from('saved_articles')
+        .delete()
+        .eq('url', article.url);
+
+      if (deleteError) {
+        alert('Error deleting article.');
+        console.error(deleteError);
+      } else {
+        articleEl.remove();
+      }
+    });
+
+    savedArticlesBox.appendChild(articleEl);
+  });
 });
