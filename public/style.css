@@ -1,24 +1,26 @@
-/* === GLOBAL RESET === */
+/* Global Styles */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #fff6bf;
+  background-color: #fcfcfc;
   color: #1c1c1e;
   line-height: 1.6;
 }
 
-/* === TITLE SECTION === */
+/* Header: Title Bar */
 .title-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #375d63;
-  color: #fff;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 1.5em;
+  background-color: #1e3a5f;
   padding: 18px 32px;
   margin: 30px auto;
   max-width: 1200px;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  color: white;
 }
 
 .main-title {
@@ -32,11 +34,12 @@ body {
   width: 180px;
   font-size: 0.8em;
   text-align: center;
+  color: white;
 }
 
-/* === NAVIGATION BAR === */
+/* Navigation */
 .nav-bar {
-  background-color: #9b2e2e;
+  background-color: #ef6c00;
   display: flex;
   justify-content: center;
   padding: 14px 16px;
@@ -49,7 +52,7 @@ body {
 }
 
 .nav-bar a {
-  color: #fff;
+  color: white;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.85em;
@@ -59,13 +62,13 @@ body {
 }
 
 .nav-bar a:hover {
-  color: #fff6bf;
-  background-color: #4e0e0e;
+  color: #1e3a5f;
+  background-color: #ffffffcc;
   padding: 4px 8px;
   border-radius: 6px;
 }
 
-/* === GRID LAYOUT === */
+/* Main Layout */
 .main-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -79,13 +82,13 @@ body {
   border-radius: 20px;
   padding: 25px;
   font-size: 1em;
-  background-color: #375d63;
-  color: #fff;
+  background-color: #1e3a5f;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  color: white;
 }
 
 .box h2 {
@@ -95,7 +98,37 @@ body {
   padding-bottom: 10px;
 }
 
-/* === ARTICLE CARDS === */
+/* Top Stories */
+.top-stories {
+  background-color: #1e3a5f;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Help Link */
+.help-link {
+  grid-column: 1 / -1;
+  justify-self: center;
+  font-size: x-large;
+  font-weight: 500;
+  flex-direction: column;
+  gap: 10px;
+  width: 95%;
+  color: white;
+}
+
+/* Recommended Section */
+.recommended {
+  color: white;
+  font-weight: 500;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Article List */
 .article-list {
   display: flex;
   flex-direction: column;
@@ -105,7 +138,7 @@ body {
 }
 
 .article {
-  background-color: #fff;
+  background-color: #f9f9f9;
   padding: 20px;
   border-radius: 12px;
   transition: background-color 0.3s, transform 0.2s;
@@ -124,7 +157,7 @@ body {
 }
 
 .article a {
-  color: #9b2e2e;
+  color: #1e3a5f;
   text-decoration: none;
 }
 
@@ -139,8 +172,10 @@ body {
   font-style: italic;
 }
 
-/* === BUTTONS === */
-button, .save-btn, .remove-btn {
+/* Buttons */
+button,
+.save-btn,
+.remove-btn {
   font-size: 1em;
   padding: 10px 20px;
   border-radius: 8px;
@@ -151,60 +186,29 @@ button, .save-btn, .remove-btn {
 }
 
 .save-btn {
-  background-color: #e5a03a;
+  background-color: #3f8c9e;
   color: white;
 }
 
 .save-btn:hover {
-  background-color: #d48824;
+  background-color: #357b8a;
   transform: scale(1.02);
 }
 
+.save-btn:active {
+  transform: scale(0.97);
+}
+
 .remove-btn {
-  background-color: #9b2e2e;
+  background-color: #a83232;
   color: white;
 }
 
 .remove-btn:hover {
-  background-color: #4e0e0e;
+  background-color: #8c2a2a;
 }
 
-/* === STOCKS TABLE === */
-#reddit-stocks {
-  background-color: #375d63;
-  color: white;
-  padding: 20px;
-  border-radius: 16px;
-  max-width: 800px;
-  margin: 40px auto;
-  text-align: center;
-}
-
-#redditTable {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  color: #1c1c1e;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-#redditTable th, #redditTable td {
-  padding: 12px 15px;
-  border-bottom: 1px solid #eee;
-  font-size: 0.95em;
-}
-
-#redditTable th {
-  background-color: #f0f0f0;
-  font-weight: 600;
-}
-
-#redditTable tr:hover {
-  background-color: #f9f9f9;
-}
-
-/* === SEARCH === */
+/* Search */
 .search-box {
   max-width: 600px;
   margin: 30px auto;
@@ -224,7 +228,7 @@ button, .save-btn, .remove-btn {
 #searchBtn {
   padding: 10px 20px;
   font-size: 1em;
-  background-color: #e5a03a;
+  background-color: #3f8c9e;
   color: white;
   border: none;
   border-radius: 8px;
@@ -232,18 +236,68 @@ button, .save-btn, .remove-btn {
 }
 
 #searchBtn:hover {
-  background-color: #d48824;
+  background-color: #357b8a;
 }
 
-/* === ABOUT BOX === */
-.about-box {
-  background-color: #375d63;
-  color: white;
-  padding: 40px;
-  border-radius: 20px;
+/* Compare */
+.compare-box {
+  max-width: 700px;
+  margin: 30px auto;
   text-align: center;
+}
+
+#compareInput {
+  width: 100%;
+  padding: 12px;
+  font-size: 1em;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.source-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  font-size: 0.95em;
+}
+
+.source-options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#compareBtn {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #3f8c9e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#compareBtn:hover {
+  background-color: #357b8a;
+}
+
+/* About */
+.about-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.about-box {
+  background-color: #1e3a5f;
+  border-radius: 20px;
+  padding: 40px;
   max-width: 800px;
-  margin: auto;
+  text-align: center;
+  color: #ffffff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -254,25 +308,105 @@ button, .save-btn, .remove-btn {
   padding-bottom: 10px;
 }
 
+.about-box p {
+  font-size: 1.05em;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
 .about-box button {
-  background-color: #e5a03a;
-  color: white;
+  font-size: 1em;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  color: #1e3a5f;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
   font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .about-box button:hover {
-  background-color: #d48824;
-  color: #fff6bf;
+  background-color: #3f8c9e;
+  color: white;
 }
 
-/* === HELP LINK === */
-.help-link {
-  grid-column: 1 / -1;
-  justify-self: center;
-  font-size: x-large;
-  font-weight: 500;
-  flex-direction: column;
+/* Stocks Page */
+#stock-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
-  width: 95%;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+#stockTicker,
+#dateRange {
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 160px;
+}
+
+#lookupButton {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #3f8c9e;
   color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#lookupButton:hover {
+  background-color: #357b8a;
+}
+
+#chart-section {
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
+
+#reddit-stocks {
+  max-width: 800px;
+  margin: 0 auto 60px;
+  padding: 20px;
+  background-color: #1e3a5f;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  color: #ffffff;
+  text-align: center;
+}
+
+#reddit-stocks h2 {
+  margin-bottom: 20px;
+  font-size: 1.6em;
+}
+
+#redditTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  color: #1c1c1e;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#redditTable th,
+#redditTable td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95em;
+}
+
+#redditTable th {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+#redditTable tr:hover {
+  background-color: #f9f9f9;
 }
