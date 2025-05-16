@@ -1,83 +1,37 @@
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
-import { createClient } from '@supabase/supabase-js';
-
-// Load .env variables
-dotenv.config();
-
-// Fix __dirname in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+const express = require('express');
+const path = require('path');
 const app = express();
-const port = process.env.PORT || 3000;
 
-// Middleware
-app.use(express.json());
-app.use(express.static(__dirname)); // Serve static files (CSS, JS, etc.)
+// Serve all static files (CSS, JS, images, etc.) from public/
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Supabase client
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
-
-// Serve homepage
+// Routes to HTML pages
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'homepage.html'));
+  res.sendFile(path.join(__dirname, 'public', 'homepage.html'));
 });
 
-// ========== API ROUTES ========== //
-
-// Save article
-app.post('/api/save', async (req, res) => {
-  const { title, source, url } = req.body;
-
-  try {
-    const { data, error } = await supabase
-      .from('saved_articles')
-      .insert([{ title, source, url }]);
-
-    if (error) throw error;
-    res.status(200).json({ message: 'Saved successfully', data });
-  } catch (err) {
-    console.error('Error saving article:', err.message);
-    res.status(500).json({ error: 'Failed to save article' });
-  }
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'about.html'));
 });
 
-// Get saved articles
-app.get('/api/saved', async (req, res) => {
-  try {
-    const { data, error } = await supabase.from('saved_articles').select('*');
-    if (error) throw error;
-    res.status(200).json(data);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to load saved articles' });
-  }
+app.get('/compare', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'compare.html'));
 });
 
-// Delete article
-app.post('/api/delete', async (req, res) => {
-  const { url } = req.body;
+app.get('/stocks', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'stocks.html'));
+});
 
-  try {
-    const { error } = await supabase
-      .from('saved_articles')
-      .delete()
-      .eq('url', url);
+app.get('/personalized', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'personalized.html'));
+});
 
-    if (error) throw error;
-    res.status(200).json({ message: 'Deleted successfully' });
-  } catch (err) {
-    console.error('Error deleting article:', err.message);
-    res.status(500).json({ error: 'Failed to delete article' });
-  }
+app.get('/saved_articles', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'saved_articles.html'));
 });
 
 // Start the server
-app.listen(port, () => {
-  console.log(`✅ Server running on http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });
