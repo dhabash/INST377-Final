@@ -14,7 +14,7 @@ body {
   align-items: center;
   font-family: "Georgia", "Times New Roman", serif;
   font-size: 1.5em;
-  background-color: #065a60;
+  background-color: #1e3a5f;
   padding: 18px 32px;
   margin: 30px auto;
   max-width: 1200px;
@@ -39,7 +39,7 @@ body {
 
 /* Navigation */
 .nav-bar {
-  background-color: #f9633b;
+  background-color: #ef6c00;
   display: flex;
   justify-content: center;
   padding: 14px 16px;
@@ -62,8 +62,8 @@ body {
 }
 
 .nav-bar a:hover {
-  color: #065a60;
-  background-color: #ffffffaa;
+  color: #1e3a5f;
+  background-color: #ffffffcc;
   padding: 4px 8px;
   border-radius: 6px;
 }
@@ -82,7 +82,7 @@ body {
   border-radius: 20px;
   padding: 25px;
   font-size: 1em;
-  background-color: #065a60;
+  background-color: #1e3a5f;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
@@ -100,7 +100,7 @@ body {
 
 /* Top Stories */
 .top-stories {
-  background-color: #065a60;
+  background-color: #1e3a5f;
   color: white;
   display: flex;
   flex-direction: column;
@@ -157,7 +157,7 @@ body {
 }
 
 .article a {
-  color: #007aff;
+  color: #1e3a5f;
   text-decoration: none;
 }
 
@@ -186,12 +186,12 @@ button,
 }
 
 .save-btn {
-  background-color: #16425b;
+  background-color: #3f8c9e;
   color: white;
 }
 
 .save-btn:hover {
-  background-color: #1e5a78;
+  background-color: #357b8a;
   transform: scale(1.02);
 }
 
@@ -208,7 +208,7 @@ button,
   background-color: #8c2a2a;
 }
 
-/* Search Box */
+/* Search */
 .search-box {
   max-width: 600px;
   margin: 30px auto;
@@ -228,7 +228,7 @@ button,
 #searchBtn {
   padding: 10px 20px;
   font-size: 1em;
-  background-color: #16425b;
+  background-color: #3f8c9e;
   color: white;
   border: none;
   border-radius: 8px;
@@ -236,10 +236,10 @@ button,
 }
 
 #searchBtn:hover {
-  background-color: #1e5a78;
+  background-color: #357b8a;
 }
 
-/* Compare Page */
+/* Compare */
 .compare-box {
   max-width: 700px;
   margin: 30px auto;
@@ -273,7 +273,7 @@ button,
 #compareBtn {
   padding: 10px 20px;
   font-size: 1em;
-  background-color: #16425b;
+  background-color: #3f8c9e;
   color: white;
   border: none;
   border-radius: 8px;
@@ -281,10 +281,10 @@ button,
 }
 
 #compareBtn:hover {
-  background-color: #1e5a78;
+  background-color: #357b8a;
 }
 
-/* About Page */
+/* About */
 .about-wrapper {
   display: flex;
   justify-content: center;
@@ -292,7 +292,7 @@ button,
 }
 
 .about-box {
-  background-color: #065a60;
+  background-color: #1e3a5f;
   border-radius: 20px;
   padding: 40px;
   max-width: 800px;
@@ -318,7 +318,7 @@ button,
   font-size: 1em;
   padding: 10px 20px;
   background-color: #ffffff;
-  color: #16425b;
+  color: #1e3a5f;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -327,8 +327,8 @@ button,
 }
 
 .about-box button:hover {
-  background-color: #16425b;
-  color: #ffffff;
+  background-color: #3f8c9e;
+  color: white;
 }
 
 /* Stocks Page */
@@ -353,7 +353,7 @@ button,
 #lookupButton {
   padding: 10px 20px;
   font-size: 1em;
-  background-color: #16425b;
+  background-color: #3f8c9e;
   color: white;
   border: none;
   border-radius: 8px;
@@ -362,7 +362,7 @@ button,
 }
 
 #lookupButton:hover {
-  background-color: #1e5a78;
+  background-color: #357b8a;
 }
 
 #chart-section {
@@ -374,7 +374,7 @@ button,
   max-width: 800px;
   margin: 0 auto 60px;
   padding: 20px;
-  background-color: #065a60;
+  background-color: #1e3a5f;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   color: #ffffff;
