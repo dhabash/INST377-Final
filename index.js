@@ -2,14 +2,15 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Serve all static files (CSS, JS, images, etc.) from public/
+// Serve static files (CSS, JS, etc.) from /public
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes to HTML pages
+// Route to homepage.html in /public
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'homepage.html'));
 });
 
+// Other pages
 app.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'about.html'));
 });
@@ -30,7 +31,7 @@ app.get('/saved_articles', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'saved_articles.html'));
 });
 
-// Start the server
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
