@@ -79,132 +79,72 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchBtn = document.getElementById('searchBtn');
   const results = document.getElementById('searchResults');
 
-  function runSearch(query) {
+  if (!searchInput || !searchBtn || !results) {
+    console.warn("🔍 Search page elements not found — skipping search setup.");
+    return;
+  }
+
+  console.log("🔍 Search initialized");
+
+  async function runSearch(query) {
     results.innerHTML = '<p>Loading...</p>';
-    fetch(`https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=en&max=6&sortby=relevance&token=${gnewsKey}`)
-      .then(res => res.json())
-      .then(data => {
-        if (!data.articles || data.articles.length === 0) {
-          results.innerHTML = '<p>No articles found.</p>';
-          return;
-        }
-        results.innerHTML = '';
-        data.articles.forEach(article => {
-          const div = document.createElement('div');
-          div.className = 'article';
-          div.innerHTML = `
-            <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
-            <p>${article.source.name}</p>
-            <button class="save-btn">Save Article</button>
-          `;
-          div.querySelector(".save-btn").addEventListener("click", async () => {
-            const { error } = await client.from('saved_articles').insert([
-              {
-                title: article.title,
-                source: article.source.name,
-                url: article.url
-              }
-            ]);
-            if (error) {
-              console.error("❌ Error saving article:", error);
-              alert("Error saving article.");
-            } else {
-              alert("Article saved!");
-            }
-          });
-          results.appendChild(div);
+    try {
+      const response = await fetch(`https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=en&max=6&sortby=relevance&token=${gnewsKey}`);
+      const data = await response.json();
+
+      if (!data.articles || data.articles.length === 0) {
+        results.innerHTML = '<p>No articles found.</p>';
+        return;
+      }
+
+      results.innerHTML = '';
+      data.articles.forEach(article => {
+        const div = document.createElement('div');
+        div.className = 'article';
+        div.innerHTML = `
+          <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
+          <p>${article.source.name}</p>
+          <button class="save-btn">Save Article</button>
+        `;
+        div.querySelector(".save-btn").addEventListener("click", async () => {
+          const { error } = await client.from('saved_articles').insert([{
+            title: article.title,
+            source: article.source.name,
+            url: article.url
+          }]);
+          if (error) {
+            console.error("❌ Error saving article:", error);
+            alert("Error saving article.");
+          } else {
+            alert("Article saved!");
+          }
         });
-      })
-      .catch(() => {
-        results.innerHTML = '<p>Error fetching articles.</p>';
+        results.appendChild(div);
       });
+    } catch (error) {
+      console.error("❌ Error fetching search results:", error);
+      results.innerHTML = '<p>Error fetching articles.</p>';
+    }
   }
 
-  if (searchBtn && searchInput) {
-    searchBtn.addEventListener('click', () => {
-      const query = searchInput.value.trim();
-      if (query) runSearch(query);
-    });
-  }
+  searchBtn.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    if (query) {
+      console.log("🔍 Running manual search:", query);
+      runSearch(query);
+    }
+  });
 
+  // Auto-search if topic= is in the URL
   const urlParams = new URLSearchParams(window.location.search);
   const prefilledTopic = urlParams.get('topic');
-  if (prefilledTopic && searchInput) {
+  if (prefilledTopic) {
     searchInput.value = prefilledTopic;
+    console.log("🔍 Running prefilled search:", prefilledTopic);
     runSearch(prefilledTopic);
   }
 });
 
-// ======= COMPARE COVERAGE PAGE =======
-document.addEventListener("DOMContentLoaded", () => {
-  const compareInput = document.getElementById('compareInput');
-  const compareBtn = document.getElementById('compareBtn');
-  const compareResults = document.getElementById('compareResults');
-
-  if (compareBtn && compareInput) {
-    compareBtn.addEventListener('click', () => {
-      const topic = compareInput.value.trim();
-      const sources = Array.from(document.querySelectorAll('.source-options input:checked')).map(cb => cb.value);
-
-      compareResults.innerHTML = '';
-
-      if (!topic || sources.length === 0) {
-        compareResults.innerHTML = '<p>Please enter a topic and select at least one source.</p>';
-        return;
-      }
-
-      fetch(`https://gnews.io/api/v4/search?q=${encodeURIComponent(topic)}&lang=en&max=10&sortby=publishedAt&token=${gnewsKey}`)
-        .then(res => res.json())
-        .then(data => {
-          if (!data.articles || data.articles.length === 0) {
-            compareResults.innerHTML = '<p>No articles found.</p>';
-            return;
-          }
-
-          sources.forEach(source => {
-            const filtered = data.articles.filter(a =>
-              a.source.name.toLowerCase().includes(source.toLowerCase()) ||
-              source.toLowerCase().includes(a.source.name.toLowerCase())
-            );
-
-            const container = document.createElement('div');
-            container.className = 'article';
-            const label = document.createElement('h4');
-            label.textContent = source.replace(/-/g, ' ').toUpperCase();
-            container.appendChild(label);
-
-            if (filtered.length > 0) {
-              const a = filtered[0];
-              container.innerHTML += `
-                <h3><a href="${a.url}" target="_blank">${a.title}</a></h3>
-                <p>${a.source.name}</p>
-                <button class="save-btn">Save Article</button>
-              `;
-              container.querySelector(".save-btn").addEventListener("click", async () => {
-                const { error } = await client.from('saved_articles').insert([
-                  {
-                    title: a.title,
-                    source: a.source.name,
-                    url: a.url
-                  }
-                ]);
-                if (error) {
-                  console.error("❌ Error saving article:", error);
-                  alert("Error saving article.");
-                } else {
-                  alert("Article saved!");
-                }
-              });
-            } else {
-              container.innerHTML += `<p>No articles found from this source.</p>`;
-            }
-
-            compareResults.appendChild(container);
-          });
-        });
-    });
-  }
-});
 
 // ======= SAVED ARTICLES PAGE =======
 document.addEventListener("DOMContentLoaded", async () => {
