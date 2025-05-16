@@ -2,43 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Compare Coverage | News Digest</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>About | News Digest</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
+    <!-- Supabase for script.js functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>
+    <!-- Confetti animation -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <!-- Main app logic -->
     <script src="/script.js" defer></script>
   </head>
 
   <body>
     <header>
-     <div class="title-box">
+      <div class="title-box">
         <div class="title-side date" id="date"></div>
         <h1 class="main-title">About</h1>
         <div class="title-side weather" id="weather"></div>
       </div>
-        <nav class="nav-bar"> 
+      <nav class="nav-bar">
         <a href="/homepage.html">Home</a>
         <a href="/personalized.html">Personal Feed</a>
-      
+        <a href="/compare.html">Compare Coverage</a>
         <a href="/stocks.html">Stocks</a>
         <a href="/saved_articles.html">Saved Articles</a>
         <a href="/about.html">About</a>
       </nav>
-
-    
-  
     </header>
 
-  <div class="about-wrapper">
-    <div class="about-box">
-      <h2>Welcome to News Digest</h2>
-      <p>
-                News Digest is a web project designed to help readers explore how different media outlets frame and prioritize current events. By aggregating headlines and articles from multiple sources, the platform allows users to identify bias and approach the news with a more critical and informed perspective.  This project was built using HTML, CSS, JavaScript, and third-party APIs, with the goal of making balanced news consumption easier and more engaging for everyone. Special thanks to Professor Dash!
-
-      </p>
-      <button onclick="confetti()"> Click Here for a Surprise</button>
-    </div>
-  </div>
-
-
-</body>
+    <main class="about-wrapper">
+      <div class="about-box">
+        <h2>Welcome to News Digest</h2>
+        <p>
+          News Digest is a web project designed to help readers explore how different media outlets frame and prioritize current events. By aggregating headlines and articles from multiple sources, the platform allows users to identify bias and approach the news with a more critical and informed perspective.
+        </p>
+        <p>
+          This project was built using HTML, CSS, JavaScript, and third-party APIs, with the goal of making balanced news consumption easier and more engaging for everyone.
+        </p>
+        <p>Special thanks to Professor Dash!</p>
+        <button onclick="confetti()">Click Here for a Surprise</button>
+      </div>
+    </main>
+  </body>
 </html>
