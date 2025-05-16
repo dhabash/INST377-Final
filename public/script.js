@@ -31,9 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   url: article.url
                 })
               })
-              .then(res => res.json())
-              .then(() => alert("Article saved!"))
-              .catch(() => alert("Error saving article."));
+                .then(res => res.json())
+                .then(() => alert("Article saved!"))
+                .catch(() => alert("Error saving article."));
             });
             topStoriesBox.appendChild(articleEl);
             topStoriesBox.appendChild(document.createElement('hr'));
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(response => response.json())
       .then(data => {
         const tempC = data.current_weather.temperature;
-        const tempF = Math.round((tempC * 9/5) + 32);
+        const tempF = Math.round((tempC * 9 / 5) + 32);
         weatherEl.textContent = `Washington, DC: ${tempF}°F`;
       })
       .catch(() => {
@@ -99,9 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   url: article.url
                 })
               })
-              .then(res => res.json())
-              .then(() => alert("Article saved!"))
-              .catch(() => alert("Error saving article."));
+                .then(res => res.json())
+                .then(() => alert("Article saved!"))
+                .catch(() => alert("Error saving article."));
             });
             results.appendChild(div);
             results.appendChild(document.createElement('hr'));
@@ -175,9 +175,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     url: a.url
                   })
                 })
-                .then(res => res.json())
-                .then(() => alert("Article saved!"))
-                .catch(() => alert("Error saving article."));
+                  .then(res => res.json())
+                  .then(() => alert("Article saved!"))
+                  .catch(() => alert("Error saving article."));
               });
             } else {
               container.innerHTML += `<p>No articles found from this source.</p>`;
