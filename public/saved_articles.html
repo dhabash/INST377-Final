@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Saved Articles | News Digest</title>
   <link rel="stylesheet" href="/style.css">
-  <script src="/script.js" defer></script>
+  <!-- Supabase client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>
 </head>
 <body>
   <div class="title-box">
@@ -14,23 +15,23 @@
     <div class="title-side weather" id="weather"></div>
   </div>
 
- <nav class="nav-bar"> 
-      <a href="/homepage.html">Home</a>
-      <a href="/personalized.html">Personal Feed</a>
-      <a href="/compare.html">Compare Coverage</a>
-      <a href="/stocks.html">Stocks</a>
-      <a href="/saved_articles.html">Saved Articles</a>
-      <a href="/about.html">About</a>
-            
-        
-      </nav>
+  <nav class="nav-bar"> 
+    <a href="/homepage.html">Home</a>
+    <a href="/personalized.html">Personal Feed</a>
+    <a href="/compare.html">Compare Coverage</a>
+    <a href="/stocks.html">Stocks</a>
+    <a href="/saved_articles.html">Saved Articles</a>
+    <a href="/about.html">About</a>
+  </nav>
 
   <section class="article-list" id="saved-articles">
     <p>Loading saved articles...</p>
   </section>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    const supabase = createClient('https://YOUR_PROJECT_ID.supabase.co', 'YOUR_ANON_KEY');
+
+    document.addEventListener("DOMContentLoaded", async () => {
       const dateEl = document.getElementById('date');
       const weatherEl = document.getElementById('weather');
       const savedArticlesBox = document.getElementById('saved-articles');
@@ -48,48 +49,53 @@
           weatherEl.textContent = `Washington, DC: ${tempF}°F`;
         });
 
-      // Load saved articles
-      if (savedArticlesBox) {
-        fetch('/api/saved')
-          .then(res => res.json())
-          .then(data => {
-            savedArticlesBox.innerHTML = '';
-            if (data && data.length > 0) {
-              data.forEach(article => {
-                const articleEl = document.createElement('div');
-                articleEl.className = 'article';
-                articleEl.innerHTML = `
-                  <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
-                  <p>${article.source}</p>
-                  <button class="remove-btn">Remove</button>
-                `;
+      // Load saved articles from Supabase
+      const { data: articles, error } = await supabase
+        .from('saved_articles')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-                articleEl.querySelector('.remove-btn').addEventListener('click', () => {
-                  const confirmDelete = confirm("Are you sure you want to remove this article?");
-                  if (!confirmDelete) return;
+      savedArticlesBox.innerHTML = '';
 
-                  fetch('/api/delete', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: article.url })
-                  })
-                  .then(res => res.json())
-                  .then(() => {
-                    articleEl.remove();
-                  })
-                  .catch(() => alert('Error deleting article.'));
-                });
-
-                savedArticlesBox.appendChild(articleEl);
-              });
-            } else {
-              savedArticlesBox.innerHTML = '<p>No saved articles found.</p>';
-            }
-          })
-          .catch(() => {
-            savedArticlesBox.innerHTML = '<p>Error loading saved articles.</p>';
-          });
+      if (error) {
+        savedArticlesBox.innerHTML = '<p>Error loading saved articles.</p>';
+        console.error(error);
+        return;
       }
+
+      if (!articles || articles.length === 0) {
+        savedArticlesBox.innerHTML = '<p>No saved articles found.</p>';
+        return;
+      }
+
+      articles.forEach(article => {
+        const articleEl = document.createElement('div');
+        articleEl.className = 'article';
+        articleEl.innerHTML = `
+          <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
+          <p>${article.source}</p>
+          <button class="remove-btn">Remove</button>
+        `;
+
+        articleEl.querySelector('.remove-btn').addEventListener('click', async () => {
+          const confirmDelete = confirm("Are you sure you want to remove this article?");
+          if (!confirmDelete) return;
+
+          const { error: deleteError } = await supabase
+            .from('saved_articles')
+            .delete()
+            .eq('url', article.url);
+
+          if (deleteError) {
+            alert('Error deleting article.');
+            console.error(deleteError);
+          } else {
+            articleEl.remove();
+          }
+        });
+
+        savedArticlesBox.appendChild(articleEl);
+      });
     });
   </script>
 
