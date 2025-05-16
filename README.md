@@ -4,11 +4,9 @@
 News Digest is a web application designed to help users critically examine media coverage across different news outlets. By aggregating headlines and articles from various sources, users can compare coverage, search custom topics, and save articles for later. Built with HTML, CSS, and JavaScript, and powered by the GNews API and Supabase, the project enables thoughtful media consumption and offers a clean, user-friendly experience.
 
 ##  Target Browsers
-- ✅ Chrome (latest versions)
-- ✅ Firefox (latest versions)
-- ✅ Safari (iOS 15+)
-- ✅ Edge (latest versions)
-- ✅ Mobile compatibility for Android and iOS Chrome/Safari
+-  Chrome (latest versions)
+-  Firefox (latest versions)
+-  Safari (iOS 15+)
 
 ## Developer Manual
 
